@@ -1,0 +1,23 @@
+{
+  "name": "tahu-studio",
+  "version": "1.0.0",
+  "description": "\"# TahuStudio\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/retordonyt-hash/TahuStudio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/retordonyt-hash/TahuStudio/issues"
+  },
+  "homepage": "https://github.com/retordonyt-hash/TahuStudio#readme",
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}

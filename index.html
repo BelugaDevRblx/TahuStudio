@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tahu Studio</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Tahu Studio - Official Site" />
+  <meta property="og:description" content="This Website are make for tahu player" />
+  <meta property="og:image" content="https://i.imgur.com/bAIN4bM_d.webp?maxwidth=760&fidelity=grand" />
+  <meta property="og:url" content="https://stealapvzsite.up.railway.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tahu Studio" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tahu Studio - Official Site" />
+  <meta name="twitter:description" content="This Website are make for tahu player" />
+  <meta name="twitter:image" content="https://i.imgur.com/bAIN4bM_d.webp?maxwidth=760&fidelity=grand" />
+
+  <link rel="icon" type="image/png" href="images/plant1.png" />
+  <link rel="apple-touch-icon" href="images/plant1.png" />
+
+  <style>
+    body{background:radial-gradient(circle at top,#0f172a,#020617);overflow-x:hidden}
+    .neon-text{text-shadow:0 0 5px #00ffe1,0 0 10px #00ffe1,0 0 20px #00ffe1}
+    .glass{backdrop-filter:blur(10px);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+    .mouse-glow{position:fixed;top:0;left:0;width:200px;height:200px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(0,255,225,.3) 0%,transparent 70%);mix-blend-mode:screen;transform:translate(-50%,-50%);z-index:9999}
+    /* Masquer l’effet souris sur mobile/tactile */
+    @media (pointer:coarse){.mouse-glow{display:none}}
+
+    /* Swiper */
+    .swiper{padding-bottom:36px}
+    .swiper-slide{display:flex;justify-content:center;align-items:center}
+    /* Tailles RESPONSIVE des images */
+    .mySwiperPlants .swiper-slide img{width:clamp(140px,40vw,260px);height:auto;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+    .mySwiperGame .swiper-slide img{width:100%;max-width:clamp(260px,88vw,720px);height:auto;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+    /* Flèches masquées sur mobile, visibles dès md */
+    .swiper-button-next,.swiper-button-prev{color:#fff;transform:translateY(-24px)}
+    @media (max-width:767px){.swiper-button-next,.swiper-button-prev{display:none!important}}
+
+    /* Hero background */
+    #home{background:url("images/Background.gif") center/cover no-repeat;position:relative}
+    #home::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:1}
+    #home>*{position:relative;z-index:2}
+
+    /* Separator */
+    .section-separator{height:48px;background:rgba(15,23,42,.7);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+
+    /* Countdown */
+    .countdown-wrap{margin-top:14px}
+    .countdown-label{font-weight:700;letter-spacing:.1em;color:#a5f3fc;text-transform:uppercase}
+    .countdown{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+    .cd-box{min-width:70px;padding:10px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 0 25px rgba(0,255,225,.08),0 10px 30px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+    .cd-num{font-size:28px;line-height:1;font-weight:800;text-shadow:0 0 12px rgba(0,255,225,.6)}
+    .cd-unit{font-size:11px;color:#cbd5e1;letter-spacing:.08em}
+    @media(min-width:768px){.cd-box{min-width:90px;padding:14px 12px}.cd-num{font-size:40px}}
+    .countdown-hint{margin-top:8px;font-size:12px;color:#94a3b8}
+    .release-now{font-size:34px;font-weight:900;color:#22d3ee;text-shadow:0 0 14px rgba(34,211,238,.8),0 0 30px rgba(0,255,225,.55);margin-top:10px;animation:pop .9s ease forwards}
+    @keyframes pop{0%{transform:scale(.85);opacity:.2}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+
+    /* Modal update logs */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.7);backdrop-filter:blur(6px);display:none;z-index:50}
+    .modal-panel{max-height:90vh;overflow:auto}
+    .badge{display:inline-block;padding:4px 10px;border-radius:9999px;background:#111827;color:#e5e7eb;font-size:12px;border:1px solid rgba(255,255,255,.08)}
+    .card{background:#0b1220;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden}
+  </style>
+</head>
+<body class="text-white font-sans">
+
+<!-- Mouse glow -->
+<div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 glass py-3 px-4 md:px-6 flex items-center justify-between z-50">
+  <div class="flex items-center gap-3">
+    <img src="images/plant1.png" alt="logo" class="w-7 h-7 rounded">
+    <h1 class="text-xl md:text-2xl font-bold neon-text">Steal a PvZ</h1>
+  </div>
+
+  <!-- Desktop nav -->
+  <nav class="hidden md:flex gap-6 text-sm">
+    <a href="#home" class="hover:text-cyan-400 transition">Home</a>
+    <a href="#features" class="hover:text-cyan-400 transition">Features</a>
+    <a href="#gallery" class="hover:text-cyan-400 transition">Gallery</a>
+    <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+    <button id="openLogs" class="px-3 py-1.5 rounded-full bg-amber-400 text-black font-semibold hover:bg-amber-300 transition">Update Logs</button>
+  </nav>
+
+  <!-- Mobile hamburger -->
+  <button id="menuBtn" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 border border-white/10">
+    ☰
+  </button>
+</header>
+
+<!-- Mobile menu drawer -->
+<nav id="mobileMenu" class="fixed top-[56px] left-0 right-0 glass px-4 py-3 hidden z-40">
+  <div class="flex flex-col gap-2 text-base">
+    <a href="#home"   class="py-2 border-b border-white/10">Home</a>
+    <a href="#features" class="py-2 border-b border-white/10">Features</a>
+    <a href="#gallery"  class="py-2 border-b border-white/10">Gallery</a>
+    <a href="#contact"  class="py-2 border-b border-white/10">Contact</a>
+    <button id="openLogsMobile" class="mt-1 px-3 py-2 rounded-lg bg-amber-400 text-black font-semibold">Update Logs</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="home" class="min-h-[88vh] pt-24 md:pt-28 pb-10 flex flex-col justify-center items-center text-center px-4" data-aos="fade-up">
+  <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-3 neon-text">
+    Tahu Studio. - Tahu Studio
+  </h2>
+  <p class="max-w-xl md:max-w-2xl text-sm sm:text-base text-gray-300 mb-5">
+    Tahu Studio.
+  </p>
+
+  <!-- Play button (hidden until release) -->
+  <a id="playBtn"
+     href="https://pastebin.com/K6kUwGsg"
+     target="_blank"
+     class="bg-cyan-400 text-black px-6 sm:px-8 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg hover:bg-cyan-300 transition"
+     style="display:none;">
+    Play Now
+  </a>
+
+  <!-- Countdown -->
+  <div class="countdown-wrap">
+    <div class="countdown-label text-xs sm:text-sm">Game Back!</div>
+    <div id="countdown" class="countdown">
+      <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-unit">DAYS</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-unit">HOURS</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-unit">MINS</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-unit">SECS</div></div>
+    </div>
+    <div id="countdown-hint" class="countdown-hint text-center px-3"></div>
+    <div id="release-now" class="release-now text-center" style="display:none;">THE GAME ARE BACK!</div>
+  </div>
+</section>
+
+<!-- Separator -->
+<div class="section-separator"></div>
+
+<!-- Features -->
+<section id="features" class="py-12 md:py-20 max-w-6xl mx-auto px-4 md:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+  <div class="glass p-5 rounded-xl hover:scale-[1.02] transition" data-aos="zoom-in">
+    🪽 <h3 class="text-lg md:text-xl font-semibold mb-2">Make your harem on roblox</h3>
+    <p class="text-sm">18+ People only on the game.</p>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="py-12 md:py-20 bg-gray-900">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10">Tahu Gallery</h2>
+    <div class="swiper mySwiperPlants">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="images/plant1.png" alt="Tahu 1"></div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-10 md:mt-16 mb-6 md:mb-10">In-Game Screenshots</h2>
+    <div class="swiper mySwiperGame">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="images/screen1.jpg" alt="Screenshot 1"></div> 
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="py-12 md:py-20 text-center px-4">
+  <h2 class="text-2xl md:text-3xl font-bold mb-4 neon-text">Join the Community</h2>
+  <p class="text-gray-300 mb-5 md:mb-6 text-sm md:text-base">Stay updated with the latest events and news.</p>
+  <a href="https://discord.gg/KdfZXFFYsE" target="_blank" class="bg-cyan-400 text-black px-5 md:px-6 py-3 rounded-full font-bold hover:bg-cyan-300 transition inline-block">
+    Join Discord
+  </a>
+</section>
+
+<!-- Footer -->
+<footer class="py-6 text-center text-xs md:text-sm glass">
+  © 2025 Tahu Studio | Game Made with ❤️ by Tahu Owner on dc.
+</footer>
+
+<!-- Update Logs Modal -->
+<div id="logsModal" class="modal-backdrop">
+  <div class="mx-auto max-w-5xl px-4 py-6">
+    <div class="card modal-panel p-4 md:p-6">
+      <div class="flex items-center justify-between gap-3">
+        <h3 class="text-xl md:text-2xl font-extrabold">Update Logs</h3>
+        <button id="closeLogs" class="rounded-full px-3 py-1 bg-slate-800 hover:bg-slate-700 border border-white/10">Close</button>
+      </div>
+
+      <div class="mt-5 md:mt-6 space-y-8">
+        <!-- Log Item -->
+        <article class="grid md:grid-cols-3 gap-4 md:gap-6 items-start">
+          <div class="md:col-span-2 card">
+            <img src="images/logs.png" alt="update cover" class="w-full object-cover">
+          </div>
+          <div>
+            <div class="badge mb-2">Update</div>
+            <div class="block text-2xl md:text-3xl font-extrabold text-amber-300 underline decoration-2 underline-offset-4">???</div>
+            <div class="text-xs md:text-sm text-slate-400 mt-2">28 August, 2025</div>
+
+            <h4 class="text-lg md:text-2xl font-bold mt-4 md:mt-6 text-amber-300">Featuring</h4>
+            <ul class="mt-2 space-y-1 text-slate-200 text-sm">
+              <li>???</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  // Mouse glow (désactivé par CSS sur tactile)
+  const glow=document.getElementById("mouseGlow");
+  document.addEventListener("mousemove",e=>{glow.style.left=`${e.clientX}px`;glow.style.top=`${e.clientY}px`});
+
+  // AOS
+  AOS.init({duration:1000,once:true});
+
+  // Mobile menu
+  const menuBtn=document.getElementById('menuBtn');
+  const mobileMenu=document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click',()=>{mobileMenu.classList.toggle('hidden')});
+  document.addEventListener('click',(e)=>{if(!mobileMenu.contains(e.target)&&e.target!==menuBtn&&window.innerWidth<768){mobileMenu.classList.add('hidden')}});
+
+  // Update Logs modal
+  const logsModal=document.getElementById('logsModal');
+  const openLogs=document.getElementById('openLogs');
+  const openLogsMobile=document.getElementById('openLogsMobile');
+  const closeLogs=document.getElementById('closeLogs');
+  function openModal(){logsModal.style.display='block';document.body.style.overflow='hidden'}
+  function closeModal(){logsModal.style.display='none';document.body.style.overflow=''}
+  if(openLogs) openLogs.addEventListener('click',openModal);
+  if(openLogsMobile) openLogsMobile.addEventListener('click',openModal);
+  closeLogs.addEventListener('click',closeModal);
+  logsModal.addEventListener('click',e=>{if(e.target===logsModal) closeModal()});
+
+  // Swipers (pagination click mobile, flèches seulement desktop)
+  new Swiper(".mySwiperPlants",{
+    loop:true,spaceBetween:16,centeredSlides:true,
+    autoplay:{delay:2500,disableOnInteraction:false},
+    pagination:{el:".mySwiperPlants .swiper-pagination",clickable:true},
+    navigation:{nextEl:".mySwiperPlants .swiper-button-next",prevEl:".mySwiperPlants .swiper-button-prev"},
+  });
+  new Swiper(".mySwiperGame",{
+    loop:true,spaceBetween:16,centeredSlides:true,
+    autoplay:{delay:3000,disableOnInteraction:false},
+    pagination:{el:".mySwiperGame .swiper-pagination",clickable:true},
+    navigation:{nextEl:".mySwiperGame .swiper-button-next",prevEl:".mySwiperGame .swiper-button-prev"},
+  });
+// ===== Release target: 15 Aug 2025 19:00 Paris =====
+// 19:00 à Paris (CEST = UTC+02) => 17:00 UTC fixe pour éviter les bugs d'heure d'été.
+const TARGET_UTC_ISO = '2025-08-28T20:00:00Z';
+const targetUTC = Date.parse(TARGET_UTC_ISO);
+
+// DOM
+const cdDays  = document.getElementById('cd-days');
+const cdHours = document.getElementById('cd-hours');
+const cdMins  = document.getElementById('cd-mins');
+const cdSecs  = document.getElementById('cd-secs');
+const cdWrap  = document.getElementById('countdown');
+const cdHint  = document.getElementById('countdown-hint');
+const relNow  = document.getElementById('release-now');
+const playBtn = document.getElementById('playBtn');
+
+// Formatters
+const parisTZ = 'Europe/Paris';
+const parisFmt = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'full',
+  timeStyle: 'short',
+  timeZone: parisTZ
+});
+
+// Détection du fuseau basé sur l'IP (avec fallback navigateur)
+async function resolveLocalTimeZone() {
+  // 1) Essai ipapi.co
+  try {
+    const r = await fetch('https://ipapi.co/json/');
+    if (r.ok) {
+      const d = await r.json();
+      if (d && d.timezone) return { tz: d.timezone, label: d.country_name || d.region || d.timezone };
+    }
+  } catch(e) {}
+
+  // 2) Essai ipwho.is
+  try {
+    const r = await fetch('https://ipwho.is/');
+    if (r.ok) {
+      const d = await r.json();
+      if (d && d.success && d.timezone && d.timezone.id) {
+        return { tz: d.timezone.id, label: d.country || d.timezone.id };
+      }
+    }
+  } catch(e) {}
+
+  // 3) Fallback: fuseau du navigateur
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  return { tz, label: tz };
+}
+
+// Affichage du hint (Paris + Local IP)
+async function renderHint() {
+  const local = await resolveLocalTimeZone();
+  const localFmt = new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'full',
+    timeStyle: 'short',
+    timeZone: local.tz
+  });
+
+  // On formate avec une Date (et pas un nombre) pour éviter les ambiguïtés de certains navigateurs
+  const targetDate = new Date(targetUTC);
+  cdHint.textContent = `Releases on ${parisFmt.format(targetDate)} (Paris) • Your local time: ${localFmt.format(targetDate)} (${local.label})`;
+}
+renderHint();
+
+// Affichage / logique du countdown
+function showRelease() {
+  if (cdWrap) cdWrap.style.display = 'none';
+  if (cdHint) cdHint.style.display = 'none';
+  if (relNow) relNow.style.display = 'block';
+  if (playBtn) {
+    playBtn.style.display = 'inline-block';
+    playBtn.classList.add('reveal-pop');
+  }
+}
+
+function updateCountdown() {
+  const diff = targetUTC - Date.now();
+  if (diff <= 0) { showRelease(); clearInterval(timer); return; }
+
+  const sec = Math.floor(diff / 1000);
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+
+  if (cdDays)  cdDays.textContent  = String(d);
+  if (cdHours) cdHours.textContent = h.toString().padStart(2,'0');
+  if (cdMins)  cdMins.textContent  = m.toString().padStart(2,'0');
+  if (cdSecs)  cdSecs.textContent  = s.toString().padStart(2,'0');
+}
+updateCountdown();
+const timer = setInterval(updateCountdown, 1000);
+if (Date.now() >= targetUTC) showRelease();
+</script>
+</body>
+</html>
